@@ -6,23 +6,26 @@ using System.Threading.Tasks;
 
 namespace BallClockRepititionCounter
 {
-    class Ball
+    class BallFactory
     {
         private int idCounter = 1;
-        public int ID { get; private set; } //Private constructor to control unique ids
-        private Ball(int id)
+        public BallFactory()
         {
-            ID = id;
-        }
-        public Ball()
-        {
-            return;
+            idCounter = 1;
         }
         public Ball NewBall()
         {
             Ball ball = new Ball(idCounter);
             idCounter += 1;
             return ball;
+        }
+    }
+    class Ball
+    {
+        public int ID { get; private set; } //Private setter to avoid changing ball ID
+        public Ball(int id)
+        {
+            ID = id;
         }
     }
 }

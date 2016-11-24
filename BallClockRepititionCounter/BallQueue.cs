@@ -44,6 +44,12 @@ namespace BallClockRepititionCounter
             nextQueue = NextQueue;
             queue = new List<Ball>();
         }
+        public void advanceTime()
+        {
+                Ball nextBall = Queue[0];
+                Queue.RemoveAt(0);
+                nextQueue.AddBall(nextBall);
+        }
         public void AddBall(Ball ball)
         {
             // Constructor for 5 minute and 1 hours queues
@@ -72,6 +78,10 @@ namespace BallClockRepititionCounter
             {
                 queue.Add(ball); // if it isn't over the max size add the ball to the top of the queue
             }
+        }
+        public void SetNextQueue(ref BallQueue NextQueue)
+        {
+            nextQueue = NextQueue;
         }
     }
 }

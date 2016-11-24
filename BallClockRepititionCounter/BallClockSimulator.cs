@@ -10,7 +10,7 @@ namespace BallClockRepititionCounter
     class BallClockSimulator
     {
         private List<int> initialOrder = new List<int>(); // Store initial id order of the balls in the sourceQueue; stores from top to bottom
-        private Ball ballGenerator = new Ball();
+        private BallFactory ballFactory = new BallFactory();
         private BallQueue sourceQueue, fiveMinuteQueue, oneHourQueue, twelveHourQueue;
         private int timeDelta = 0; // stores the amount of 1 minute intervals; i.e. time passed in minutes
         public int TimeDelta
@@ -25,6 +25,7 @@ namespace BallClockRepititionCounter
             twelveHourQueue = new BallQueue(11, ref sourceQueue); // Balls in the 1 hour/ball queue
             oneHourQueue = new BallQueue(11, ref sourceQueue, ref twelveHourQueue); // Balls in the 5 minute/ball queue
             fiveMinuteQueue = new BallQueue(4, ref sourceQueue, ref oneHourQueue); // Balls in the 1 minute/ball queue; maxSize is 5, 
+            sourceQueue.SetNextQueue(ref fiveMinuteQueue); // Need to reset because first instance points at null fiveMinuteQueue
             createSourceQueue(numberOfBalls);
         }
         private void createSourceQueue(int ballNumber)
@@ -32,7 +33,7 @@ namespace BallClockRepititionCounter
         {
             for (int i=0; i < ballNumber ; i++) // Use on less ball to one being 'fixed' and not part of the rotation/order
             {
-                Ball newBall = ballGenerator.NewBall();
+                Ball newBall = ballFactory.NewBall();
                 sourceQueue.Queue.Add(newBall);
                 initialOrder.Add(newBall.ID);
             }
@@ -40,19 +41,13 @@ namespace BallClockRepititionCounter
         public int Solve()
         // Solver advances the balls until they reach the initial order in which the balls were populated
         {
-            advanceTime(); // to ensure checkOrder fails on first check
-            while (!checkOrder())
+            //sourceQueue.advanceTime(); // to ensure checkOrder fails on first check
+            while (!checkOrder() || TimeDelta == 0)
             {
-                advanceTime();
+                sourceQueue.advanceTime();
+                TimeDelta += 1;
             }
             return TimeDelta;
-        }
-        private void advanceTime()
-        {
-            Ball nextBall = sourceQueue.Queue[0];
-            sourceQueue.Queue.RemoveAt(0);
-            fiveMinuteQueue.AddBall(nextBall);
-            TimeDelta += 1;
         }
         private bool checkOrder()
         // Check if there is the same initial order in the sourceQueue ball IDs as the start of the clock
