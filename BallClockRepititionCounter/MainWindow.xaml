@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:BallClockRepititionCounter"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="350" Width="800">
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="*"></RowDefinition>
@@ -18,8 +18,54 @@
         </Grid.ColumnDefinitions>
         <Label Content="Number of Balls" VerticalAlignment="Center" HorizontalAlignment="Center"></Label>
         <Label Content="Days until Reptition" VerticalAlignment="Center" HorizontalAlignment="Center" Grid.Row="1"></Label>
-        <TextBox Name="TextBoxInput" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15,0,15,0"></TextBox>
+        <ListView ItemsSource="{Binding BallCounts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="0" Grid.Column="1">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="Input">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                 <Label Content="{Binding Balls}"></Label>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
+        <ListView ItemsSource="{Binding BallCounts, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" Grid.Row="1" Grid.Column="1">
+            <ListView.View>
+                <GridView AllowsColumnReorder="False">
+                    <GridViewColumn Header="" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Balls}"></Label>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="" Width="150">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content=" balls repeat in "></Label>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content="{Binding Reptitions}"></Label>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                    <GridViewColumn Header="" Width="50">
+                        <GridViewColumn.CellTemplate>
+                            <DataTemplate>
+                                <Label Content=" days "></Label>
+                            </DataTemplate>
+                        </GridViewColumn.CellTemplate>
+                    </GridViewColumn>
+                </GridView>
+            </ListView.View>
+        </ListView>
         <Label Name="ResultLabel" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Margin="15,0,15,0"></Label>
-        <Button Click="btnSolve" Content="Solve!" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"></Button>
+        <Button Click="btnSolve" Content="Choose File To Solve" Grid.Row="2" Grid.Column="0" Grid.ColumnSpan="2"></Button>
     </Grid>
 </Window>

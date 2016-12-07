@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.Windows;
 
 namespace BallClockRepititionCounter
 {
@@ -20,18 +21,17 @@ namespace BallClockRepititionCounter
     /// </summary>
     public partial class MainWindow : Window
     {
-        BallClockSimulator clockSim;
+        BallClockViewModel vm;
         public MainWindow()
         {
+            vm = new BallClockViewModel();
+            DataContext = vm;
             InitializeComponent();
         }
 
         private void btnSolve(object sender, RoutedEventArgs e)
         {
-            int numberOfBalls = int.Parse(TextBoxInput.Text);
-            clockSim = new BallClockSimulator(numberOfBalls);
-            clockSim.Solve();
-            ResultLabel.Content = (clockSim.TimeDelta/1440).ToString();
+            vm.Solve();
         }
     }
 }
